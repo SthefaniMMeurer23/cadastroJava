@@ -10,7 +10,7 @@ let senha = document.querySelector('#senha');
 let labelSenha = document.querySelector('#labelSenha');
 let validSenha = false;
 
-let confirmSenha = document.querySelector('#confirmaSenha');
+let confirmSenha = document.querySelector('#confirmSenha');
 let labelConfirmSenha= document.querySelector('#labelConfirmSenha');
 let validConfirmSenha = false;
 
@@ -41,5 +41,50 @@ usuario.addEventListener('keyup',()=>{
 })
 
 senha.addEventListener('keyup', ()=>{
-    if
+    if (senha.value.length <= 8) {
+        labelSenha.setAttribute('style', 'color: red')
+        labelSenha.innerHTML = 'Insirir senha de 8 ou mais caracteres'
+    } else if (!/[A-Z]/.test(senha.value)) {
+        labelSenha.setAttribute('style', 'color: red')
+        labelSenha.innerHTML = 'Senha: a senha deve ter pelo menos uma letra maiúscula'
+    } else if (!/[\W_]/.test(senha.value)){
+        labelSenha.setAttribute('style', 'color: red')
+        labelSenha.innerHTML = 'Senha: a senha deve ter pelo menos um caractere especial'
+        validSenha = true;
+    } else{
+        labelSenha.setAttribute('style' , 'color: green')
+        labelSenha.innerHTML= 'Senha:'
+        validSenha = true;
+    }
 })
+
+confirmSenha.addEventListener('keyup', ()=>{
+    if (senha.value != confirmSenha.value){
+        labelConfirmSenha.setAttribute('style', 'color : red')
+        labelConfirmSenha.innerHTML = 'Senha : as senhas não conferem'
+    } else {
+        labelConfirmSenha.setAttribute('style', 'color: green')
+        labelConfirmSenha.innerHTML = 'Corfirmar Senha:'
+        validConfirmSenha =  true;
+    }
+})
+
+    function cadastrar(){
+          if (validNome && validUsuario && validSenha && validConfirmSenha) {
+              let listarUsuario = JSON.parse(localStorage.getItem('listaUsuario' ) || '[]')
+
+              let senhaCriptografada = CryptoJS.SHA512(senha.value).toString()
+
+              listarUsuario.push(
+                {
+                    nomeCadastrado: nome.value,
+                    usuarioCadastrado: usuario.value,
+                    senhaCadastrada : senha.value
+                }
+              )
+
+              localStorage.setItem('listaUsuario', JSON.stringify(listarUsuario))
+        }
+    }
+
+
